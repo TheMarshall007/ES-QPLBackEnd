@@ -64,7 +64,7 @@ public class SetupData implements ApplicationListener<ContextRefreshedEvent> {
             user.setUsername("Leonardo Vinicius");
             user.setEmail("leonardovinicius_silva@hotmail.com");
             user.setPassword(passwordEncoder.encode("123456"));
-            user.setRegistration("058.932.545-04");
+            user.setRegistration("110.821.919-57");
             Set<Role> enumRoleSet = new HashSet<>();
             enumRoleSet.add(roleRepository.findByName(EnumRole.ROLE_PROFESSOR));
             user.setRoles(enumRoleSet);
