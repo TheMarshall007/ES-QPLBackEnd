@@ -75,7 +75,7 @@ public class TrailService {
 
     public Trail findById(Integer id){
         Optional<Trail> opt = trailRepository.findById(id);
-        if(opt.isEmpty()){
+        if(!opt.isPresent()){
             throw new WarningException("Trilha não encontrada");
         }
         return opt.get();

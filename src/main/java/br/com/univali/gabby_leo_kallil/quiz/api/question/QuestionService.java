@@ -47,7 +47,7 @@ public class QuestionService {
 
     public Question findById(Integer id){
         Optional<Question> opt = questionRepository.findById(id);
-        if(opt.isEmpty()){
+        if(!opt.isPresent()){
             throw new WarningException("Pergunta não foi encontrada");
         }
         return opt.get();

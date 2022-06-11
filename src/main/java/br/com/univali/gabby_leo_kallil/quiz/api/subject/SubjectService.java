@@ -34,7 +34,7 @@ public class SubjectService {
 
     public Subject findById(Integer id){
         Optional<Subject> opt = subjectRepository.findById(id);
-        if(opt.isEmpty()){
+        if(!opt.isPresent()){
             throw new WarningException("Disciplina não foi encontrada");
         }
         return opt.get();
