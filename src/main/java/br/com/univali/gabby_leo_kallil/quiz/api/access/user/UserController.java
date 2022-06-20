@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/user")
@@ -38,7 +40,13 @@ public class UserController {
     @PostMapping(value = "/insert_student", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN') or hasRole('PROFESSOR')")
     public ResponseEntity<UserDTOResponse> insertManager(@RequestBody UserDTOInsert dto){
-        return new ResponseEntity<>(userService.insertProfessor(dto).getDTOResponse(), HttpStatus.OK);
+        return new ResponseEntity<>(userService.insertStudent(dto).getDTOResponse(), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/get_students", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMIN') or hasRole('PROFESSOR')")
+    public ResponseEntity<List<UserDTOResponse>> getStudents(){
+        return new ResponseEntity<>(userService.findAllStudents(),HttpStatus.OK);
     }
 
     @GetMapping(value = "/find_by_email", produces = MediaType.APPLICATION_JSON_VALUE)

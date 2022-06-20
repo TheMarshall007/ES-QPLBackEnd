@@ -4,6 +4,7 @@ import br.com.univali.gabby_leo_kallil.quiz.api.access.enum_role.EnumRole;
 import br.com.univali.gabby_leo_kallil.quiz.api.access.role.Role;
 import br.com.univali.gabby_leo_kallil.quiz.api.access.role.RoleService;
 import br.com.univali.gabby_leo_kallil.quiz.api.access.user.DTO.UserDTOInsert;
+import br.com.univali.gabby_leo_kallil.quiz.api.access.user.DTO.UserDTOResponse;
 import br.com.univali.gabby_leo_kallil.quiz.api.access.user.DTO.UserDTOUpdate;
 import br.com.univali.gabby_leo_kallil.quiz.component.email.EmailService;
 import br.com.univali.gabby_leo_kallil.quiz.security.exception.WarningException;
@@ -75,6 +76,11 @@ public class UserService {
         enumRoleSet.add(roleService.getByName(EnumRole.ROLE_PROFESSOR));
         user.setRoles(enumRoleSet);
         return userRepository.save(user);
+    }
+
+    public List<UserDTOResponse> findAllStudents(){
+        List<UserDTOResponse> opt = userRepository.findAllUsersByRole("2");
+        return opt;
     }
 
     public User findById(Integer id){

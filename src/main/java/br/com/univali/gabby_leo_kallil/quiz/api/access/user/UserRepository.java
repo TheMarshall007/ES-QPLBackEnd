@@ -1,5 +1,6 @@
 package br.com.univali.gabby_leo_kallil.quiz.api.access.user;
 
+import br.com.univali.gabby_leo_kallil.quiz.api.access.user.DTO.UserDTOResponse;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -21,6 +22,9 @@ public interface UserRepository extends CrudRepository<User, Integer> {
 
     @Query("SELECT u FROM User u where u.registration = :registration")
     User findByCPF(@Param("registration") String registration);
+
+    @Query("SELECT u FROM User u WHERE u.roles =:role")
+    List<UserDTOResponse> findAllUsersByRole(@Param("role") String role);
 
     @Query("SELECT u FROM User u")
     List<User> findAllUsers();
