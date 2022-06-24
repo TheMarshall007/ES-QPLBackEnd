@@ -29,7 +29,7 @@ public class QuizApplication {
         mailSender.setPort(587);
 
         mailSender.setUsername("quiz.app.univali@gmail.com");
-        mailSender.setPassword("univali2022");
+        mailSender.setPassword("zzkujaievkuqhmfg");
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
