@@ -30,7 +30,7 @@ public class QuestionController {
         return ResponseEntity.ok(questionService.findById(Integer.parseInt(id)).getDTOCompleteResponse());
     }
 
-    @GetMapping(value = "/pagination", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/pagination", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PaginationDTOResponse<QuestionDTOResponse>> pagination(@RequestBody QuestionDTOSearch dto) {
         return ResponseEntity.ok(questionService.pagination(dto));
     }
