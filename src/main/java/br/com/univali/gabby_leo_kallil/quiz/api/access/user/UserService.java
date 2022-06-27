@@ -36,6 +36,7 @@ public class UserService {
         User user = new User();
         String password = generatePassword();
         user.setPassword(encryptPassword(password));
+        user.setRegistration(dto.getRegistration());
         user.setActive(true);
         setValues(user, dto);
         user = userRepository.save(user);
