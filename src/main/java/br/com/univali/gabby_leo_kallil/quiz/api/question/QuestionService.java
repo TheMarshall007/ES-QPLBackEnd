@@ -30,7 +30,7 @@ public class QuestionService {
         Question question = new Question();
         question.setQuestion(dto.getQuestion());
         question.setAnswers(dto.getAnswers());
-        question.setCorrectAnswer(question.getCorrectAnswer());
+        question.setCorrectAnswer(dto.getCorrectAnswer());
         question.setProfessor(userService.findById(dto.getProfessorId()));
         question.setSubject(subjectService.findById(dto.getSubjectId()));
         return questionRepository.save(question);
