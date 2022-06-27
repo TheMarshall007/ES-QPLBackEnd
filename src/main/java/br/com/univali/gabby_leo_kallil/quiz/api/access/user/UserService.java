@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -79,8 +80,9 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public List<UserDTOResponse> findAllStudents(){
-        List<UserDTOResponse> opt = userRepository.findAllUsersByRole("2");
+    public List<User> findAllStudents(){
+        List<User> opt = userRepository.findAllUsersByRole(BigInteger.valueOf(2));
+        System.out.println(opt);
         return opt;
     }
 

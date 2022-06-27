@@ -45,7 +45,7 @@ public class UserController {
 
     @GetMapping(value = "/get_students", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN') or hasRole('PROFESSOR')")
-    public ResponseEntity<List<UserDTOResponse>> getStudents(){
+    public ResponseEntity<List<User>> getStudents(){
         return new ResponseEntity<>(userService.findAllStudents(),HttpStatus.OK);
     }
 
