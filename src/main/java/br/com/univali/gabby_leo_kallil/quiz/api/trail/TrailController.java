@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping(value = "/trail")
 public class TrailController {
@@ -30,20 +31,20 @@ public class TrailController {
 
     @PostMapping(value = "/insert", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('PROFESSOR')")
-    public ResponseEntity<TrailDTOResponse<QuestionDTOCompleteResponse>> insert(@RequestBody TrailDTOInsert dto){
+    public ResponseEntity<TrailDTOResponse<QuestionDTOCompleteResponse>> insert(@RequestBody TrailDTOInsert dto) {
         return ResponseEntity.ok(trailService.insert(dto).getDTOResponseToReview());
     }
 
     @PostMapping(value = "/answer", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<List<AnswerDTOResponse>> answer(@RequestHeader("Authorization") String token,
-                                                          @RequestBody TrailDTOAnswer dto){
+                                                          @RequestBody TrailDTOAnswer dto) {
         return ResponseEntity.ok(trailService.answer(dto, jwtUtils.getUserIdFromJwtToken(token)));
     }
 
     @GetMapping(value = "/get_results_by_trail/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('PROFESSOR')")
-    public ResponseEntity<List<TrailDTOResult>> getResultsByTrail(@PathVariable String id){
+    public ResponseEntity<List<TrailDTOResult>> getResultsByTrail(@PathVariable String id) {
         return ResponseEntity.ok(trailService.findById(Integer.parseInt(id)).getResults());
     }
 
