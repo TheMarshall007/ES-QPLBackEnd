@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,8 +24,9 @@ public interface UserRepository extends CrudRepository<User, Integer> {
     @Query("SELECT u FROM User u where u.registration = :registration")
     User findByCPF(@Param("registration") String registration);
 
-    @Query("SELECT u FROM User u WHERE u.roles =:role")
-    List<UserDTOResponse> findAllUsersByRole(@Param("role") String role);
+    @Query(value = "SELECT u.* from \"user\" u "+
+            "inner join user_roles ur on u.id = ur.user_id and ur.role_id = :role", nativeQuery=true)
+    List<User> findAllUsersByRole(@Param("role") BigInteger role);
 
     @Query("SELECT u FROM User u")
     List<User> findAllUsers();

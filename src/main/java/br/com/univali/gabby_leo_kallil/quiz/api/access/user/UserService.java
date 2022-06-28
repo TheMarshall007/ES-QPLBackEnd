@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -32,7 +33,7 @@ public class UserService {
     @Autowired
     private EmailService emailService;
 
-    private User insert(UserDTOInsert dto){
+    private User insert(UserDTOInsert dto) {
         User user = new User();
         String password = generatePassword();
         user.setPassword(encryptPassword(password));
@@ -44,26 +45,26 @@ public class UserService {
         return user;
     }
 
-    public User update(User user, UserDTOUpdate dto){
+    public User update(User user, UserDTOUpdate dto) {
         setValues(user, dto.getDTOInsert());
         userRepository.updateEmail(dto.getEmail(), user.getId());
         return userRepository.save(user);
     }
 
     private void setValues(User user, UserDTOInsert dto) {
-        if(dto.getUsername() != null)
+        if (dto.getUsername() != null)
             user.setUsername(dto.getUsername());
-        if(dto.getEmail() != null)
+        if (dto.getEmail() != null)
             user.setEmail(dto.getEmail());
     }
 
-    public User insertAdmin(UserDTOInsert dto){
+    public User insertAdmin(UserDTOInsert dto) {
         User user = insert(dto);
         user.setRoles(Collections.singleton(roleService.getByName(EnumRole.ROLE_ADMIN)));
         return userRepository.save(user);
     }
 
-    public User insertStudent(UserDTOInsert dto){
+    public User insertStudent(UserDTOInsert dto) {
         User user = insert(dto);
         Set<Role> enumRoleSet = new HashSet<>();
         enumRoleSet.add(roleService.getByName(EnumRole.ROLE_STUDENT));
@@ -71,7 +72,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User insertProfessor(UserDTOInsert dto){
+    public User insertProfessor(UserDTOInsert dto) {
         User user = insert(dto);
         Set<Role> enumRoleSet = new HashSet<>();
         enumRoleSet.add(roleService.getByName(EnumRole.ROLE_PROFESSOR));
@@ -79,52 +80,55 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public List<UserDTOResponse> findAllStudents(){
-        List<UserDTOResponse> opt = userRepository.findAllUsersByRole("2");
-        return opt;
+    public List<UserDTOResponse> findAllStudents() {
+        List<UserDTOResponse> optDTO = new ArrayList<>();
+        for (User u : userRepository.findAllUsersByRole(BigInteger.valueOf(2))) {
+            optDTO.add(u.getDTOResponse());
+        }
+        return optDTO;
     }
 
-    public User findById(Integer id){
+    public User findById(Integer id) {
         Optional<User> opt = userRepository.findById(id);
-        if(!opt.isPresent()){
+        if (!opt.isPresent()) {
             throw new WarningException("Usuário não encontrada");
         }
         return opt.get();
     }
 
-    public User findUserByEmail(String email){
+    public User findUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
-    public User findUserByCPF(String cpf){
+    public User findUserByCPF(String cpf) {
         return userRepository.findByCPF(cpf);
     }
 
-    public User findUserByUserName(String username){
+    public User findUserByUserName(String username) {
         Optional<User> opt = userRepository.findByUsername(username);
-        if(!opt.isPresent()){
+        if (!opt.isPresent()) {
             throw new WarningException("Usuário não encontrada");
         }
         return opt.get();
     }
 
-    public User active(Integer userId){
+    public User active(Integer userId) {
         User user = findById(userId);
         user.setActive(true);
         return userRepository.save(user);
     }
 
-    public User deactivate(Integer userId){
+    public User deactivate(Integer userId) {
         User user = findById(userId);
         user.setActive(false);
         return userRepository.save(user);
     }
 
-    public void delete(Integer userId){
+    public void delete(Integer userId) {
         userRepository.deleteById(userId);
     }
 
-    public void changePassword(Integer userId){
+    public void changePassword(Integer userId) {
         User user = findById(userId);
         user.setPassword(encryptPassword("123456"));
         userRepository.save(user);
@@ -134,7 +138,7 @@ public class UserService {
         return passwordEncoder.encode(password);
     }
 
-    private String generatePassword(){
+    private String generatePassword() {
         /*String upperCaseLetters = RandomStringUtils.random(2, 65, 90, true, true);*/
         String lowerCaseLetters = RandomStringUtils.random(2, 97, 122, true, true);
         String numbers = RandomStringUtils.randomNumeric(2);

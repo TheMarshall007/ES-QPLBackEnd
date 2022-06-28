@@ -26,8 +26,8 @@ public class Trail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "quiz_generator")
-    @SequenceGenerator(name="quiz_generator", sequenceName="quiz_id_seq", allocationSize=1)
-    @Column(updatable=false, nullable=false)
+    @SequenceGenerator(name = "quiz_generator", sequenceName = "quiz_id_seq", allocationSize = 1)
+    @Column(updatable = false, nullable = false)
     private Integer id;
 
     @NotNull
@@ -42,7 +42,7 @@ public class Trail {
     private List<Phase> phases;
 
 
-    public TrailDTOResponse<QuestionDTOResponse> getDTOResponseToAnswer(){
+    public TrailDTOResponse<QuestionDTOResponse> getDTOResponseToAnswer() {
         TrailDTOResponse<QuestionDTOResponse> dto = new TrailDTOResponse<>();
         dto.setId(getId());
         dto.setName(getName());
@@ -51,7 +51,7 @@ public class Trail {
         return dto;
     }
 
-    public TrailDTOResponse<QuestionDTOCompleteResponse> getDTOResponseToReview(){
+    public TrailDTOResponse<QuestionDTOCompleteResponse> getDTOResponseToReview() {
         TrailDTOResponse<QuestionDTOCompleteResponse> dto = new TrailDTOResponse<>();
         dto.setId(getId());
         dto.setName(getName());
@@ -60,7 +60,16 @@ public class Trail {
         return dto;
     }
 
-    public TrailDTOResponseSimple getDTOResponseSimple(){
+    public TrailDTOResponse<QuestionDTOResponse> getDTOResponse() {
+        TrailDTOResponse<QuestionDTOResponse> dto = new TrailDTOResponse<>();
+        dto.setId(getId());
+        dto.setName(getName());
+        dto.setDifficulty(getDifficulty());
+        dto.setPhases(getPhases().stream().map(Phase::getDTOResponseToAnswer).collect(Collectors.toList()));
+        return dto;
+    }
+
+    public TrailDTOResponseSimple getDTOResponseSimple() {
         TrailDTOResponseSimple dto = new TrailDTOResponseSimple();
         dto.setId(getId());
         dto.setName(getName());
@@ -68,20 +77,20 @@ public class Trail {
         return dto;
     }
 
-    public List<TrailDTOResult> getResults(){
+    public List<TrailDTOResult> getResults() {
         Map<Integer, TrailDTOResult> results = new HashMap<>();
-        for(Phase phase : getPhases()){
-            for(Question question : phase.getQuestions()){
-                for(Answer answer : question.getStudentsAnswers()){
+        for (Phase phase : getPhases()) {
+            for (Question question : phase.getQuestions()) {
+                for (Answer answer : question.getStudentsAnswers()) {
                     Integer studentId = answer.getUser().getId();
-                    if(results.containsKey(studentId)){
-                        if(answer.getIsCorrect()) {
+                    if (results.containsKey(studentId)) {
+                        if (answer.getIsCorrect()) {
                             results.get(studentId).addCorrectAnswers();
                         }
-                    }else{
+                    } else {
                         TrailDTOResult r = new TrailDTOResult();
                         r.setStudentName(answer.getUser().getUsername());
-                        if(answer.getIsCorrect()) {
+                        if (answer.getIsCorrect()) {
                             r.addCorrectAnswers();
                         }
                         results.put(studentId, r);

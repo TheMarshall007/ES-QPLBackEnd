@@ -3,10 +3,9 @@ package br.com.univali.gabby_leo_kallil.quiz.api.trail;
 import br.com.univali.gabby_leo_kallil.quiz.api.answer.DTO.AnswerDTOResponse;
 import br.com.univali.gabby_leo_kallil.quiz.api.question.DTO.QuestionDTOCompleteResponse;
 import br.com.univali.gabby_leo_kallil.quiz.api.question.DTO.QuestionDTOResponse;
-import br.com.univali.gabby_leo_kallil.quiz.api.trail.DTO.TrailDTOAnswer;
-import br.com.univali.gabby_leo_kallil.quiz.api.trail.DTO.TrailDTOInsert;
-import br.com.univali.gabby_leo_kallil.quiz.api.trail.DTO.TrailDTOResponse;
-import br.com.univali.gabby_leo_kallil.quiz.api.trail.DTO.TrailDTOResult;
+import br.com.univali.gabby_leo_kallil.quiz.api.question.DTO.QuestionDTOSearch;
+import br.com.univali.gabby_leo_kallil.quiz.api.trail.DTO.*;
+import br.com.univali.gabby_leo_kallil.quiz.component.pagination.PaginationDTOResponse;
 import br.com.univali.gabby_leo_kallil.quiz.security.security.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -42,10 +41,22 @@ public class TrailController {
         return ResponseEntity.ok(trailService.answer(dto, jwtUtils.getUserIdFromJwtToken(token)));
     }
 
+    @PostMapping(value = "/pagination", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PaginationDTOResponse<TrailDTOResponseSimple>> pagination(@RequestBody TrailDTOSearch dto) {
+        return ResponseEntity.ok(trailService.pagination(dto));
+    }
+
+    @GetMapping(value = "/get_by_trail_id", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<TrailDTOResponse<QuestionDTOResponse>> getTrailById(@RequestParam String id) {
+        return ResponseEntity.ok(trailService.findById(Integer.parseInt(id)).getDTOResponse());
+    }
+
     @GetMapping(value = "/get_results_by_trail/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('PROFESSOR')")
     public ResponseEntity<List<TrailDTOResult>> getResultsByTrail(@PathVariable String id) {
         return ResponseEntity.ok(trailService.findById(Integer.parseInt(id)).getResults());
     }
+
+
 
 }

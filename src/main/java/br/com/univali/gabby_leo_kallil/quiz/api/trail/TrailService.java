@@ -41,32 +41,32 @@ public class TrailService {
     @Autowired
     private AnswerService answerService;
 
-    public Trail insert(TrailDTOInsert dto){
+    public Trail insert(TrailDTOInsert dto) {
         Trail trail = new Trail();
         trail.setName(dto.getName());
         trail.setDifficulty(dto.getDifficulty());
         trail = trailRepository.save(trail);
         List<Phase> phaseList = new LinkedList<>();
-        for(PhaseDTOInsert phaseDTOInsert : dto.getPhases()){
+        for (PhaseDTOInsert phaseDTOInsert : dto.getPhases()) {
             phaseList.add(phaseService.insert(phaseDTOInsert, trail));
         }
         trail.setPhases(phaseList);
         return trailRepository.save(trail);
     }
 
-    public PaginationDTOResponse<TrailDTOResponseSimple> pagination(TrailDTOSearch dto){
+    public PaginationDTOResponse<TrailDTOResponseSimple> pagination(TrailDTOSearch dto) {
         PageRequest pageable = PageRequest.of(dto.getPage(), 15, Sort.Direction.ASC, "id");
         Page<Trail> trailPage;
-        if(dto.getName() != null){
-            if(dto.getDifficulty() != null){
+        if (dto.getName() != null) {
+            if (dto.getDifficulty() != null) {
                 trailPage = trailRepository.findAllByNameLikeIgnoreCaseAndDifficulty(dto.getName(), dto.getDifficulty(), pageable);
-            }else{
+            } else {
                 trailPage = trailRepository.findAllByNameLikeIgnoreCase(dto.getName(), pageable);
             }
-        }else{
-            if(dto.getDifficulty() != null){
+        } else {
+            if (dto.getDifficulty() != null) {
                 trailPage = trailRepository.findAllByDifficulty(dto.getDifficulty(), pageable);
-            }else{
+            } else {
                 trailPage = trailRepository.findAll(pageable);
             }
         }
@@ -75,15 +75,15 @@ public class TrailService {
                 dto.getPage(), trailPage.getNumberOfElements(), trailPage.getTotalPages());
     }
 
-    public Trail findById(Integer id){
+    public Trail findById(Integer id) {
         Optional<Trail> opt = trailRepository.findById(id);
-        if(!opt.isPresent()){
+        if (!opt.isPresent()) {
             throw new WarningException("Trilha não encontrada");
         }
         return opt.get();
     }
 
-    public List<AnswerDTOResponse> answer(TrailDTOAnswer dto, Integer studentId){
+    public List<AnswerDTOResponse> answer(TrailDTOAnswer dto, Integer studentId) {
         List<Answer> responses = new LinkedList<>();
         Trail trail = findById(dto.getTrailId());
         for(TrailDTOQuestionAnswer dtoQuestionAnswer : dto.getAnswers()){
