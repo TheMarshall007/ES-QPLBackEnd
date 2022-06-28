@@ -40,7 +40,7 @@ public class Answer {
         dto.setCorrectAnswer(dto.getCorrectAnswer());
         dto.setIsCorrect(dto.getIsCorrect());
         dto.setSentAnswer(dto.getSentAnswer());
-        dto.setIsCorrect(dto.getIsCorrect());
+        dto.setCorrectAnswer(getQuestion().getCorrectAnswer());
         dto.setQuestion(getQuestion().getQuestion());
         return dto;
     }
