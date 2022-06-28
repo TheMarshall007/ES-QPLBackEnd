@@ -47,13 +47,13 @@ public class QuestionService {
         return questionRepository.save(question);
     }
 
-    public Question addAnswers(Question question, Answer answer){
+    public void addAnswers(Question question, Answer answer){
         if(question.getStudentsAnswers() == null){
             question.setStudentsAnswers(Collections.singletonList(answer));
         }else{
             question.getStudentsAnswers().add(answer);
         }
-        return questionRepository.save(question);
+        questionRepository.save(question);
     }
 
     public Question findById(Integer id){

@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.print.attribute.standard.Media;
 import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -39,6 +40,11 @@ public class TrailController {
     public ResponseEntity<List<AnswerDTOResponse>> answer(@RequestHeader("Authorization") String token,
                                                           @RequestBody TrailDTOAnswer dto) {
         return ResponseEntity.ok(trailService.answer(dto, jwtUtils.getUserIdFromJwtToken(token)));
+    }
+
+    @GetMapping(value = "/result", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<TrailDTOResponse<QuestionDTOCompleteResponse>> result(@RequestParam Integer trailId){
+        return ResponseEntity.ok(trailService.findById(trailId).getDTOResponseToReview());
     }
 
     @PostMapping(value = "/pagination", produces = MediaType.APPLICATION_JSON_VALUE)
