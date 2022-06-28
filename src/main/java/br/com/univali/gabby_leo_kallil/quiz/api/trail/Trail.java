@@ -1,6 +1,7 @@
 package br.com.univali.gabby_leo_kallil.quiz.api.trail;
 
 import br.com.univali.gabby_leo_kallil.quiz.api.answer.Answer;
+import br.com.univali.gabby_leo_kallil.quiz.api.answer.DTO.AnswerDTOResponse;
 import br.com.univali.gabby_leo_kallil.quiz.api.phase.Phase;
 import br.com.univali.gabby_leo_kallil.quiz.api.question.DTO.QuestionDTOCompleteResponse;
 import br.com.univali.gabby_leo_kallil.quiz.api.question.DTO.QuestionDTOResponse;

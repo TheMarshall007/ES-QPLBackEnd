@@ -1,5 +1,6 @@
 package br.com.univali.gabby_leo_kallil.quiz.api.phase;
 
+import br.com.univali.gabby_leo_kallil.quiz.api.answer.DTO.AnswerDTOResponse;
 import br.com.univali.gabby_leo_kallil.quiz.api.phase.DTO.PhaseDTOResponse;
 import br.com.univali.gabby_leo_kallil.quiz.api.question.DTO.QuestionDTOCompleteResponse;
 import br.com.univali.gabby_leo_kallil.quiz.api.question.DTO.QuestionDTOResponse;
@@ -53,7 +54,5 @@ public class Phase {
         dto.setQuestions(getQuestions().stream().map(Question::getDTOCompleteResponse).collect(Collectors.toList()));
         return dto;
     }
-
-
 
 }

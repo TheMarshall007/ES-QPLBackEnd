@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class AnswerService {
 
@@ -35,6 +38,11 @@ public class AnswerService {
         answer.setSentAnswer(dto.getSentAnswer());
         answer.setIsCorrect(question.getCorrectAnswer().equals(dto.getSentAnswer()));
         return answerRepository.save(answer);
+    }
+
+    public List<AnswerDTOResponse> getResults(Integer trailId, Integer studentId){
+        return answerRepository.findAllByTrailAndUserId(trailId, studentId).stream().map(Answer::getDTOResponse)
+                .collect(Collectors.toList());
     }
 
 }

@@ -100,4 +100,8 @@ public class TrailService {
         return responses.stream().map(Answer::getDTOResponse).collect(Collectors.toList());
     }
 
+    public List<AnswerDTOResponse> getAnswers(Integer trailId, Integer studentId){
+       return answerService.getResults(trailId, studentId);
+    }
+
 }
