@@ -46,6 +46,11 @@ public class TrailController {
         return ResponseEntity.ok(trailService.pagination(dto));
     }
 
+    @GetMapping(value = "/get_by_trail_id", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<TrailDTOResponse<QuestionDTOResponse>> getTrailById(@RequestParam String id) {
+        return ResponseEntity.ok(trailService.findById(Integer.parseInt(id)).getDTOResponse());
+    }
+
     @GetMapping(value = "/get_results_by_trail/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('PROFESSOR')")
     public ResponseEntity<List<TrailDTOResult>> getResultsByTrail(@PathVariable String id) {
