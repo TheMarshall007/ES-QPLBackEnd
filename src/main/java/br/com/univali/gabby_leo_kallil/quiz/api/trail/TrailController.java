@@ -63,7 +63,7 @@ public class TrailController {
         return ResponseEntity.ok(trailService.findById(Integer.parseInt(id)).getResults());
     }
 
-    @GetMapping(value = "/result_by_trail", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/result_by_trail", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<List<AnswerDTOResponse>> answer(@RequestHeader("Authorization") String token,
                                                           @RequestParam Integer trailId) {
