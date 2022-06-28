@@ -1,5 +1,6 @@
 package br.com.univali.gabby_leo_kallil.quiz.api.trail;
 
+import br.com.univali.gabby_leo_kallil.quiz.api.answer.Answer;
 import br.com.univali.gabby_leo_kallil.quiz.api.answer.AnswerService;
 import br.com.univali.gabby_leo_kallil.quiz.api.answer.DTO.AnswerDTOInsert;
 import br.com.univali.gabby_leo_kallil.quiz.api.answer.DTO.AnswerDTOResponse;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -82,18 +84,20 @@ public class TrailService {
     }
 
     public List<AnswerDTOResponse> answer(TrailDTOAnswer dto, Integer studentId){
-        List<AnswerDTOResponse> responses = new LinkedList<>();
+        List<Answer> responses = new LinkedList<>();
         Trail trail = findById(dto.getTrailId());
-        for(TrailDTOQuestionAnswer answer : dto.getAnswers()){
-            Question question = questionService.findById(answer.getQuestionId());
+        for(TrailDTOQuestionAnswer dtoQuestionAnswer : dto.getAnswers()){
+            Question question = questionService.findById(dtoQuestionAnswer.getQuestionId());
             AnswerDTOInsert insert = new AnswerDTOInsert();
             insert.setTrailId(trail.getId());
             insert.setQuestionId(question.getId());
             insert.setStudentId(studentId);
-            insert.setSentAnswer(answer.getAnswer());
-            responses.add(answerService.insert(insert).getDTOResponse());
+            insert.setSentAnswer(dtoQuestionAnswer.getAnswer());
+            Answer answer = answerService.insert(insert);
+            responses.add(answer);
+            questionService.addAnswers(question, answer);
         }
-        return responses;
+        return responses.stream().map(Answer::getDTOResponse).collect(Collectors.toList());
     }
 
 }

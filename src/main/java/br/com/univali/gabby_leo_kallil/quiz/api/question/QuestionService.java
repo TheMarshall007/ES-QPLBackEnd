@@ -1,6 +1,7 @@
 package br.com.univali.gabby_leo_kallil.quiz.api.question;
 
 import br.com.univali.gabby_leo_kallil.quiz.api.access.user.UserService;
+import br.com.univali.gabby_leo_kallil.quiz.api.answer.Answer;
 import br.com.univali.gabby_leo_kallil.quiz.api.question.DTO.*;
 import br.com.univali.gabby_leo_kallil.quiz.api.subject.SubjectService;
 import br.com.univali.gabby_leo_kallil.quiz.component.pagination.PaginationDTOResponse;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -42,6 +44,15 @@ public class QuestionService {
         question.setAnswers(dto.getAnswers());
         question.setCorrectAnswer(question.getCorrectAnswer());
         question.setSubject(subjectService.findById(dto.getSubjectId()));
+        return questionRepository.save(question);
+    }
+
+    public Question addAnswers(Question question, Answer answer){
+        if(question.getStudentsAnswers() == null){
+            question.setStudentsAnswers(Collections.singletonList(answer));
+        }else{
+            question.getStudentsAnswers().add(answer);
+        }
         return questionRepository.save(question);
     }
 
