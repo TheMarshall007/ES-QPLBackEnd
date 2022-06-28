@@ -42,7 +42,7 @@ public class TrailController {
         return ResponseEntity.ok(trailService.answer(dto, jwtUtils.getUserIdFromJwtToken(token)));
     }
 
-    @GetMapping(value = "/result", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/result", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<TrailDTOResponse<QuestionDTOCompleteResponse>> result(@RequestParam Integer trailId){
         return ResponseEntity.ok(trailService.findById(trailId).getDTOResponseToReview());
     }
