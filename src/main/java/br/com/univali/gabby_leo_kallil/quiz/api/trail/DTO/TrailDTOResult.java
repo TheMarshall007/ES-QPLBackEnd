@@ -11,6 +11,9 @@ public class TrailDTOResult {
     private Integer correctAnswers;
 
     public void addCorrectAnswers(){
+        if(this.correctAnswers == null){
+            this.correctAnswers = 0;
+        }
         this.correctAnswers++;
     }
 
