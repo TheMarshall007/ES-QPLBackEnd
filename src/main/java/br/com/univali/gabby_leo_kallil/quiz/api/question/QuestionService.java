@@ -65,7 +65,7 @@ public class QuestionService {
     }
 
     public PaginationDTOResponse<QuestionDTOResponse> pagination(QuestionDTOSearch dto){
-        PageRequest pageable = PageRequest.of(dto.getPage(), 15, Sort.Direction.ASC, "id");
+        PageRequest pageable = PageRequest.of(dto.getPage(), 30, Sort.Direction.ASC, "id");
         Page<Question> questionPage;
         if(dto.getSubjectId() != null){
             if(dto.getProfessorId() != null){
